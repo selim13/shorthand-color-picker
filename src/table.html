@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Color table</title>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <p id="color-code">Pick the color</p>
+    </div>
+
+    <input
+      type="range"
+      min="0"
+      max="255"
+      step="17"
+      name="brightness"
+      id="brightness"
+      value="255"
+    />
+
+    <div class="variations">
+      <div class="variation">
+        <div id="red-brightness" class="brightness"></div>
+        <div id="red-colors" class="colors"></div>
+      </div>
+      <div class="variation">
+        <div id="green-brightness" class="brightness"></div>
+        <div id="green-colors" class="colors"></div>
+      </div>
+      <div class="variation">
+        <div id="blue-brightness" class="brightness"></div>
+        <div id="blue-colors" class="colors"></div>
+      </div>
+    </div>
+
+    <div id="color-table"></div>
+
+    <script src="table.js"></script>
+  </body>
+</html>
