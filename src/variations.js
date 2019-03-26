@@ -1,5 +1,5 @@
 import "./style.css";
-import "./table.css";
+import "./variations.css";
 import { create } from "domain";
 
 const table = document.getElementById("color-table");
@@ -14,37 +14,54 @@ const pallets = {
   blues: document.getElementById("blue-colors")
 };
 
+let currentElement = null;
+
+function pickColor(element) {
+  const r = parseInt(element.dataset.r);
+  const g = parseInt(element.dataset.g);
+  const b = parseInt(element.dataset.b);
+
+  const hex = `#${r.toString(16).charAt(0)}${g
+    .toString(16)
+    .charAt(0)}${b.toString(16).charAt(0)}`;
+  const rgb = `rgb(${r}, ${g}, ${b})`;
+
+  colorCode.innerHTML = `${hex} ${rgb}`;
+}
+
+function selectColor(element) {
+  if (currentElement) currentElement.classList.remove("selected");
+  element.classList.add("selected");
+  currentElement = element;
+  pickColor(element);
+}
+
 function populate(brightness) {
   const variations = { reds: [], greens: [], blues: [] };
 
   for (let variation in variations) {
     for (let y = 0; y < 16; y++) {
       for (let x = 0; x < 16; x++) {
-        const element = document.createElement("div");
+        const element = document.createElement("button");
+        element.setAttribute("type", "button");
         element.classList.add("color");
-
-        element.addEventListener("click", e => {
-          const r = parseInt(element.dataset.r);
-          const g = parseInt(element.dataset.g);
-          const b = parseInt(element.dataset.b);
-
-          const hex = `#${r.toString(16).charAt(0)}${g
-            .toString(16)
-            .charAt(0)}${b.toString(16).charAt(0)}`;
-          const rgb = `rgb(${r}, ${g}, ${b})`;
-
-          colorCode.innerHTML = `${hex} ${rgb}`;
-        });
 
         pallets[variation].appendChild(element);
         variations[variation].push(element);
+
+        element.addEventListener("click", e => {
+          selectColor(e.target);
+        });
+
+        element.addEventListener("focus", e => {
+          selectColor(e.target);
+        });
       }
     }
   }
 
   return variations;
 }
-const variations = populate(255);
 
 function updateColors(brightness, variations) {
   redBrightness.style["background-color"] = `rgb(${brightness}, 0, 0)`;
@@ -75,7 +92,9 @@ function updateColors(brightness, variations) {
   }
 }
 
+const variations = populate(255);
 updateColors(255, variations);
-brightness.addEventListener("input", e =>
-  updateColors(parseInt(e.target.value, 10), variations)
-);
+brightness.addEventListener("input", e => {
+  updateColors(parseInt(e.target.value, 10), variations);
+  if (currentElement) pickColor(currentElement);
+});

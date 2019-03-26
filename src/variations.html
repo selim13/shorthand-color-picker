@@ -9,18 +9,23 @@
 
   <body>
     <div class="topbar">
+      <label for="brightness" class="brightness-picker">
+        Key color brightness
+        <input
+          type="range"
+          min="0"
+          max="255"
+          step="17"
+          name="brightness"
+          id="brightness"
+          value="255"
+        />
+      </label>
+
       <p id="color-code">Pick the color</p>
     </div>
 
-    <input
-      type="range"
-      min="0"
-      max="255"
-      step="17"
-      name="brightness"
-      id="brightness"
-      value="255"
-    />
+    <h1>Color variations</h1>
 
     <div class="variations">
       <div class="variation">
@@ -39,6 +44,6 @@
 
     <div id="color-table"></div>
 
-    <script src="table.js"></script>
+    <script src="variations.js"></script>
   </body>
 </html>
