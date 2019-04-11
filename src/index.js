@@ -1,40 +1,52 @@
 import "./style.css";
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const $table = document.getElementById("table");
+const $colorCode = document.getElementById("color-code");
+let currentElement = null;
 
-const width = canvas.width;
-const height = canvas.height;
-console.log(width, height);
+function pickColor(element) {
+  const r = parseInt(element.dataset.r, 10);
+  const g = parseInt(element.dataset.g, 10);
+  const b = parseInt(element.dataset.b, 10);
 
-const step = height / 255;
-const hue = 0;
-console.log(step);
-for (let i = 0; i < 255; i++) {
-  ctx.fillStyle = `hsl(${i}, 100%, 50%)`;
-  ctx.fillRect(width - 20, i * step, width, step);
+  const hex = `#${r.toString(16).charAt(0)}${g
+    .toString(16)
+    .charAt(0)}${b.toString(16).charAt(0)}`;
+  const rgb = `rgb(${r}, ${g}, ${b})`;
+
+  $colorCode.innerHTML = `${hex} ${rgb}`;
 }
 
-ctx.fillStyle = `hsl(${hue}, 100%, 100%)`;
-ctx.fillRect(0, 0, 50, 50);
+function selectColor(element) {
+  if (currentElement) currentElement.classList.remove("selected");
+  element.classList.add("selected");
+  currentElement = element;
+  pickColor(element);
+}
 
-function drawArea(hue) {
-  for (let x = 0; x <= 256; x++) {
-    for (let y = 0; y <= 256; y++) {
-      ctx.fillStyle = `hsl(${hue}, ${(100 / 256) * x}%, ${(100 / 256) * y}%)`;
-      ctx.fillRect(x, height - y, 1, 1);
+for (let r = 0; r < 16; r++) {
+  const block = document.createElement("div");
+  block.classList.add("table__block");
+  $table.appendChild(block);
+
+  for (let g = 0; g < 16; g++) {
+    for (let b = 0; b < 16; b++) {
+      const color = `rgb(${r * 17}, ${g * 17}, ${b * 17})`;
+      const element = document.createElement("button");
+      element.classList.add("table__item");
+      element.style.backgroundColor = color;
+      element.dataset.r = r * 17;
+      element.dataset.g = g * 17;
+      element.dataset.b = b * 17;
+      block.appendChild(element);
+
+      element.addEventListener("click", e => {
+        selectColor(e.target);
+      });
+
+      element.addEventListener("focus", e => {
+        selectColor(e.target);
+      });
     }
   }
 }
-
-drawArea(0);
-
-canvas.addEventListener("click", e => {
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.x;
-  const y = e.clientY - rect.y;
-
-  if (x >= width - 20) {
-    drawArea(y);
-  }
-});

@@ -17,9 +17,9 @@ const pallets = {
 let currentElement = null;
 
 function pickColor(element) {
-  const r = parseInt(element.dataset.r);
-  const g = parseInt(element.dataset.g);
-  const b = parseInt(element.dataset.b);
+  const r = parseInt(element.dataset.r, 10);
+  const g = parseInt(element.dataset.g, 10);
+  const b = parseInt(element.dataset.b, 10);
 
   const hex = `#${r.toString(16).charAt(0)}${g
     .toString(16)
